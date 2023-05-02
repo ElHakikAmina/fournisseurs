@@ -1,5 +1,8 @@
 # Fournisueurs maroc
-L'objectif est de créer un site web qui rassemble les grossistes, les unités de production, les cooperatives et les artisans qui veulent produire bes biens avec les marchands et les entrepereneurs au Maroc.
+
+Projet Fil Rouge à YouCode:
+
+Notre site web est une plateforme de marché qui réunit les fournisseurs, tels que les grossistes, les unités de production, les artisans et les coopératives, avec les marchands et les entrepreneurs du Maroc. Notre objectif est de créer une solution en ligne complète qui permette aux fournisseurs de vendre leurs produits de manière efficace, tout en offrant aux acheteurs une sélection de produits de qualité. Nous sommes déterminés à faciliter la connexion entre ces deux parties en fournissant une interface facile à utiliser et des fonctionnalités pratiques pour la gestion des commandes et des stocks.
 
 ![designpage](https://user-images.githubusercontent.com/112892620/235727199-d50d9874-5195-48ff-86d3-990df3aff9da.png)
 
