@@ -1,6 +1,79 @@
 <?php
 class Commande
 {
+    public static function totalCommandeLivreeduClient($data)
+    {
+        // $query="SELECT distinct(id) from commande where acheter='1' and date_envoi is not null and date_livraison is not null and id_client=:id_client";
+        $query="
+        SELECT commande.*
+FROM commande
+INNER JOIN produits_composant ON commande.id = produits_composant.id_commande
+INNER JOIN produit ON produit.id = produits_composant.id_produit
+where commande.acheter='1' and commande.date_envoi is not null and commande.date_livraison is not null and produit.id_client=:id_client
+        ";
+        $stmt =DB::connect()->prepare($query);
+        $stmt->bindParam('id_client',$data['id_client']);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+    public static function totalCommandeNonLivreeduClient($data)
+    {
+        $query="
+        SELECT commande.*
+FROM commande
+INNER JOIN produits_composant ON commande.id = produits_composant.id_commande
+INNER JOIN produit ON produit.id = produits_composant.id_produit
+where commande.acheter='1'  and commande.date_livraison is  null and produit.id_client=:id_client
+        ";
+        $stmt =DB::connect()->prepare($query);
+        $stmt->bindParam(':id_client',$data['id_client']);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+    public static function totalCommandeduClient($data)
+    {
+        //$query="SELECT distinct(id) from commande where acheter='1' and id_client=:id_client";
+        $query="select commande.* from commande
+        inner join produits_composant on commande.id = produits_composant.id_commande
+        inner join produit on produit.id= produits_composant.id_produit
+        where produit.id_client=:id_client and commande.acheter='1'
+        ";
+        $stmt =DB::connect()->prepare($query);
+        $stmt->bindParam(':id_client',$data['id_client']);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+    public static function totalCommandeNonEnvoyeeduClient($data)
+    {
+        $query="SELECT commande.* FROM commande INNER JOIN produits_composant ON commande.id = produits_composant.id_commande
+INNER JOIN produit ON produit.id = produits_composant.id_produit
+where commande.acheter='1' and commande.date_envoi is  null and commande.date_livraison is  null and produit.id_client=:id_client
+        ";
+        $stmt =DB::connect()->prepare($query);
+        $stmt->bindParam(':id_client',$data['id_client']);
+        $stmt->execute();
+        // die();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+    public static function getAllCommandesduClient($data)
+    {
+        //$stmt = DB::connect()->prepare("SELECT * FROM commande where id_client=:id_client and acheter='1'");
+        $stmt=DB::connect()->prepare("
+        select commande.* from commande
+        inner join produits_composant on produits_composant.id_commande = commande.id
+        inner join produit on produits_composant.id_produit = produit.id
+        where commande.acheter='1' and produit.id_client=:id_client
+        ");
+        $stmt->bindParam(':id_client',$data['id_client']);
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt=null;
+    }
     static public function afficheCommandeProduit($data){
         $stmt = DB::connect()->prepare("SELECT *,categorie.nom as categorieNom, 
         produits_composant.id_produit as id_produit
@@ -88,7 +161,7 @@ class Commande
         $stmt = DB::connect()->prepare("SELECT * FROM commande INNER JOIN
          produits_composant ON commande.id = produits_composant.id_commande INNER JOIN 
          produit ON produit.id =  produits_composant.id_produit
-        where id_client=".$_SESSION['id_client']." and acheter='0' order by produits_composant.id desc");
+        where commande.id_client=".$_SESSION['id_client']." and acheter='0' order by produits_composant.id desc");
         $stmt->execute();
         return $stmt->fetchAll();
         $stmt->close();
@@ -96,11 +169,10 @@ class Commande
     }
     public static function historiqueDesCommandes()
     {
-        
         $stmt = DB::connect()->prepare("SELECT * FROM commande INNER JOIN
          produits_composant ON commande.id = produits_composant.id_commande INNER JOIN 
          produit ON produit.id =  produits_composant.id_produit
-        where id_client=".$_SESSION['id_client']." and acheter='1' order by produits_composant.id desc");
+        where commande.id_client=".$_SESSION['id_client']." and acheter='1' order by produits_composant.id desc");
         $stmt->execute();
         return $stmt->fetchAll();
         $stmt->close();
@@ -207,8 +279,7 @@ class Commande
             $stmt=DB::connect()->prepare($query);
             $stmt->execute();
             $s=$stmt->fetch();
-            $id_commande=$s['id'];
-            
+            $id_commande=$s['id'];   
         }
         elseif($countCommandeNotPurchased==1 && $data['acheter']==0)
         {

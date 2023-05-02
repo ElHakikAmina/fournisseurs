@@ -1,4 +1,6 @@
-     <div class="bg-muted text-center py-1"> Notre support est disponible 24/7</div>
+     <div class="bg-muted text-center py-1">
+     
+     Notre support est disponible 24/7</div>
      <div class="header d-flex flex-wrap bg-black justify-content-between">
         <div class="mx-auto mx-lg-0">
         <a href="http://localhost/fournisseurs/index" class="text-decoration-none ">
@@ -10,7 +12,7 @@
         <div class="mx-auto">
             <form class="d-flex" role="search" method="POST" action="http://localhost/fournisseurs/search/1">
             <input class="form-control me-1" name="search" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn btn-primary " type="submit">Search</button>
+            <button class="btn btn btn-primary " type="submit">Recherche</button>
             </form>
         </div>
         <!---->
@@ -19,7 +21,7 @@
             if(isset($_SESSION['logged']) and isset($_SESSION['id_client']))
             {
                 ?>
-                <a href="http://localhost/fournisseurs/profile/<?php echo $_SESSION['id_client']; ?>" class="link-primary text-decoration-none ChakraPetch text-white">Profile</a>&nbsp;&nbsp;&nbsp;
+                <a href="http://localhost/fournisseurs/profile/<?php echo $_SESSION['id_client']; ?>" class="link-primary text-decoration-none  text-white">Profile</a>&nbsp;&nbsp;&nbsp;
                 <?php
             }
             if(isset($_SESSION['admin']))
@@ -33,9 +35,10 @@
             }else if(isset($_SESSION['client']))
             {
                 ?>
-            <a href="http://localhost/fournisseurs/historiquecommandes" class="text-white text-decoration-none ChakraPetch">Historique des commandes</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="http://localhost/fournisseurs/historiquecommandes" class="text-white text-decoration-none ">Historique des commandes</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <?php if($_SESSION['role']!=1) {?>
-                    <a href="http://localhost/fournisseurs/addProduct" class="text-white text-decoration-none ChakraPetch">Ajouter un produit</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="http://localhost/fournisseurs/addProduct" class="text-white text-decoration-none ">Ajouter un produit</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="http://localhost/fournisseurs/dashboardClient" class="text-white text-decoration-none ">Dashboard</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <?php
                 }
                 ?>
@@ -61,4 +64,10 @@
             }
             ?>
         </div> 
+</div>
+<div class="d-flex bg-secondary flex-column flex-md-row justify-content-between px-4 py-2 text-center">
+    <div ><a href="http://localhost/fournisseurs/cooperative" class="text-white text-decoration-none">Les coopératives </a></div>
+    <div><a href="http://localhost/fournisseurs/artisan" class="text-white text-decoration-none">Les artisans</a></div>
+    <div><a href="http://localhost/fournisseurs/uniteproduction" class="text-white text-decoration-none">Les unités de production </a></div>
+    <div><a href="http://localhost/fournisseurs/grossisste" class="text-white text-decoration-none">Les Grossisstes </a></div>
 </div>

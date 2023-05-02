@@ -1,6 +1,6 @@
 <div class="d-flex flex-column mx-2 text-center ">
     <div class="me-4 mb-4 d-flex flex-row flex-wrap justify-content-around">
-        <?php include('views/pages/menudashboardadmin.php');?>
+        <?php include('views/pages/menudashboardclient.php');?>
     </div>
 <!----------->
     <div>
@@ -34,7 +34,7 @@
         <!-- Masquer -->
         <a href="http://localhost/fournisseurs/masquerProduit/<?php echo $p['id'];?>"><input type="submit" value="Masquer" class="btn btn-warning mb-2" style="width:95px;"></a>
         <!-- Delete -->
-        <form method="POST" action="http://localhost/fournisseurs/afficheproduitadmin/<?php echo $p['id'];?>">
+        <form method="POST" action="http://localhost/fournisseurs/afficheproduitclient/<?php echo $p['id'];?>">
           <input type="submit" value="Supprimer" class="btn btn-danger" style="width:95px;">
         </form>
       </td>

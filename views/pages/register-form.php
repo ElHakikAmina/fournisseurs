@@ -1,5 +1,10 @@
 
 <div class="w-50 mx-auto mt-5" style="margin-bottom:40px !important;">
+<?php if(isset($_GET['id']) and $_GET['id']==0){  ?>
+  <div class="text-danger text-center">
+    <?php echo $_SESSION['erreur_register']; ?>
+  </div>
+<?php }?>
 <h2 class="">Créer un compte</h2>
 <form method="POST">
   <div class="form-group" >
@@ -45,7 +50,7 @@
   </div>
   <button type="submit"  name="submit" class="btn btn-primary ">Submit</button>
   <div >
-    <p class="">Vous avez déja un compte? <a href="login" class="">Connectez-vous</a><p>
+    <p class="">Vous avez déja un compte? <a href="http://localhost/fournisseurs/login" class="">Connectez-vous</a><p>
   </div>
 </form>
 </div>

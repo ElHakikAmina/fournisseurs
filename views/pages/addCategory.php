@@ -1,4 +1,4 @@
-<div class="w-50 mx-auto" style="margin-bottom:40px !important;">
+<div class="w-50 mx-auto mt-5" style="margin-bottom:40px !important;">
 <h2 class="ChakraPetch text-primary">Ajouter une catégorie</h2>
 <form method="POST" enctype="multipart/form-data">
   <div class="form-group" >

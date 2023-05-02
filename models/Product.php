@@ -1,5 +1,39 @@
 <?php
 class Product {
+    static public function getAllProductsSESSION($data)
+    {
+        $query="SELECT * from produit where id_client=:id_client";
+        $stmt=DB::connect()->prepare($query);
+        $stmt->bindParam(':id_client',$data['id_client']);
+       
+        $stmt->execute();
+        
+        return $stmt->fetchAll();
+    }
+    static public function getAllProducts()
+    {
+        $query="select * from produit";
+        $query=DB::connect()->prepare($query);
+        $query->execute();
+        return $query->fetchAll();
+    }
+    static public function NombreDeFoisUnProduitEstAchetee($data)
+    {
+        $query="select id_produit from produits_composant where id_produit=:id_produit";
+        $stmt =DB::connect()->prepare($query);
+        $stmt->bindParam(':id_produit',$data['id_produit']);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
+    static public function TopVentes()
+    {
+        $stmt = DB::connect()->prepare("select produit.* , count(produits_composant.id_produit) as produitCelebre from produits_composant join produit on produit.id=produits_composant.id_produit group by produits_composant.id_produit order by produitCelebre DESC limit 5");
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt=null;
+    }
     static public function getAllSellerProduct($data)
     {
         $id = $data['id'];
@@ -39,7 +73,14 @@ class Product {
             echo 'erreur'.$ex->getMessage();
         }
     }
-
+    static public function totalProductOneClient($data){
+        $query="SELECT * from produit where id_client=:id_client ";
+        $stmt =DB::connect()->prepare($query);
+        $stmt->bindParam(':id_client',$data['id_client']);
+        $stmt->execute();
+        $count = $stmt->rowCount();
+        return $count;
+    }
     static public function totalProduct(){
         $query="SELECT * from produit  ";
         $stmt =DB::connect()->prepare($query);
@@ -88,14 +129,11 @@ class Product {
     static public function update($data)
     {
         $stmt = DB::connect()->prepare('update  produit SET
-        reference = :reference,libelle = :libelle,code_barre = :code_barre,
-        prix_achat = :prix_achat,prix_final = :prix_final,prix_offre = :prix_offre, description=:description, categorie=:categorie, photo=:photo where id = :id
+        libelle = :libelle,
+        prix_final = :prix_final,prix_offre = :prix_offre, description=:description, categorie=:categorie, photo=:photo where id = :id
             ');
         $stmt->bindParam(':id',$data['id']);    
-        $stmt->bindParam(':reference',$data['reference']);
         $stmt->bindParam(':libelle',$data['libelle']);
-        $stmt->bindParam(':code_barre',$data['code_barre']);
-        $stmt->bindParam(':prix_achat',$data['prix_achat']);
         $stmt->bindParam(':prix_final',$data['prix_final']); 
         $stmt->bindParam(':prix_offre',$data['prix_offre']);
         $stmt->bindParam(':description',$data['description']);
@@ -173,9 +211,9 @@ class Product {
             echo 'erreur'.$ex->getMessage();
         }
     }
-    static public function getAll()
+    static public function nouvelleArrivee()
     {
-        $stmt = DB::connect()->prepare("SELECT * FROM produit where masquer != 1 order by id desc");
+        $stmt = DB::connect()->prepare("SELECT * FROM produit where masquer != 1  order by id desc limit 4");
         $stmt->execute();
         return $stmt->fetchAll();
         $stmt->close();
@@ -185,14 +223,14 @@ class Product {
     {
         $stmt = DB::connect()->prepare(
             'INSERT INTO produit 
-            (reference,libelle,code_barre,prix_achat,prix_final,prix_offre,description,categorie,photo,masquer,id_client)
+            (libelle,prix_final,prix_offre,description,categorie,photo,masquer,id_client,quantity,last_quantity)
             VALUES
-            (:reference,:libelle,:code_barre,:prix_achat,:prix_final,:prix_offre,:description,:categorie,:photo,:masquer,:id_client)
+            (:libelle,:prix_final,:prix_offre,:description,:categorie,:photo,:masquer,:id_client,:quantity,:last_quantity)
             ');
-        $stmt->bindParam(':reference',$data['reference']);
+        // $stmt->bindParam(':reference',$data['reference']);
         $stmt->bindParam(':libelle',$data['libelle']);
-        $stmt->bindParam(':code_barre',$data['code_barre']);
-        $stmt->bindParam(':prix_achat',$data['prix_achat']);
+        // $stmt->bindParam(':code_barre',$data['code_barre']);
+        // $stmt->bindParam(':prix_achat',$data['prix_achat']);
         $stmt->bindParam(':prix_final',$data['prix_final']);
         $stmt->bindParam(':prix_offre',$data['prix_offre']);
         $stmt->bindParam(':description',$data['description']);
@@ -200,6 +238,8 @@ class Product {
         $stmt->bindParam(':photo',$data['photo']);
         $stmt->bindParam(':masquer',$data['masquer']);
         $stmt->bindParam(':id_client',$data['id_client']);
+        $stmt->bindParam(':quantity',$data['quantity']);
+        $stmt->bindParam(':last_quantity',$data['last_quantity']);
         if($stmt->execute())
         {
             return 'ok';

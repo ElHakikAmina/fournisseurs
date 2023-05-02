@@ -1,7 +1,39 @@
 <?php
 class CommandeController
 {
-   
+    // dashboard client
+    public function totalCommandeLivreeduClient(){
+        $data=array(
+            'id_client'=>$_SESSION['id_client'],
+        );
+        return Commande::totalCommandeLivreeduClient($data); }
+        //
+    public function totalCommandeNonLivreeduClient(){
+        $data=array(
+            'id_client'=>$_SESSION['id_client'],
+        );
+        return Commande::totalCommandeNonLivreeduClient($data);
+    }
+    //
+    public function totalCommandeduClient(){ 
+        $data=array(
+            'id_client'=>$_SESSION['id_client'],
+        );
+        return Commande::totalCommandeduClient($data);
+    }
+    public function getAllCommandesduClient()
+    {
+        $data=array(
+            'id_client'=>$_SESSION['id_client'],
+        );
+        return  $commandes=Commande::getAllCommandesduClient($data);
+    }
+    public function totalCommandeNonEnvoyeeduClient(){
+        $data=array(
+            'id_client'=>$_SESSION['id_client'],
+        );
+        return Commande::totalCommandeNonEnvoyeeduClient($data);
+    }
     public function afficheCommandeProduit(){
      
         if(isset($_GET['id']))
@@ -16,7 +48,7 @@ class CommandeController
     {
         if(isset($_POST['envoyerMtn']))
         {
-            $date = date('d-m-y h:i:s');
+            $date = date('d-m-y ');
             $data=array(
             'id_commande'=>$_POST['id_commande'],
             'date_envoi'=>$date,
@@ -24,12 +56,11 @@ class CommandeController
             $result = Commande::changerEtat($data);
             if($result === 'ok')
             {
-               header("location:http://localhost/fournisseurs/dashboard");
-                
+               header("location:http://localhost/fournisseurs/dashboardClient"); 
             } 
         }elseif (isset($_POST['livrerMtn']))
         {
-            $date = date('d-m-y h:i:s');
+            $date = date('d-m-y ');
             $data=array(
                 'id_commande'=>$_POST['id_commande'],
                 'date_livraison'=>$date,
@@ -37,8 +68,7 @@ class CommandeController
             $result = Commande::changerEtat($data);
             if($result === 'ok')
             {
-               header("location:http://localhost/fournisseurs/dashboard");
-                
+               header("location:http://localhost/fournisseurs/dashboardClient");
             } 
         }
     }
@@ -50,8 +80,7 @@ class CommandeController
             $result = Commande::deleteCommande($data);
             if($result === 'ok')
             {
-               header("location:http://localhost/fournisseurs/dashboard");
-                
+               header("location:http://localhost/fournisseurs/dashboard"); 
             } 
         } 
     }
@@ -85,7 +114,6 @@ class CommandeController
             if($result === 'ok')
             {
                header("location:http://localhost/fournisseurs/historiquecommandes");
-                
             } 
         }  
     }
@@ -113,7 +141,8 @@ class CommandeController
         }
         else if(isset($_POST['ajouter_au_panier']) )
         {
-            $date = date('d-m-y h:i:s');
+            
+            $date = date('d-m-y');
             $data=array(
                 'date_creation'=>$date,
                 //'date_envoi'=>$_POST['date_envoi'],
@@ -134,7 +163,7 @@ class CommandeController
             }
         }elseif(isset($_POST['acheter']) && $_SESSION['logged']==true)
         {
-            $date = date('d-m-y h:i:s');
+            $date = date('d-m-y');
             $data=array(
                 'date_creation'=>$date,
                 //'date_envoi'=>$_POST['date_envoi'],
@@ -145,6 +174,8 @@ class CommandeController
                 'id_commande'=>$_SESSION['id_client'],
                 'acheter'=>1,
             );
+            // var_dump($data); 
+            // die();
             $result = Commande::order($data);
             if($result=='ok')
             {

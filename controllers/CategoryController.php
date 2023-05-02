@@ -71,24 +71,33 @@ class CategoryController{
     {
         if(isset($_POST['submit']))
         {
-            $icone=file_get_contents($_FILES["icone"]["tmp_name"]);
-            $photo=file_get_contents($_FILES["photo"]["tmp_name"]);
-            $data=array(
-                'nom'=>$_POST['nom'],
-                'description'=>$_POST['description'],
-                'photo'=>$photo,
-                'icone'=>$icone,
-                'masquer'=>0,
-            );
-            $result=Category::add($data);
-            if($result =='ok')
+            if(
+                isset($_POST['nom']) && !empty($_POST['nom']) &&
+                isset($_POST['description']) && !empty($_POST['description']) &&
+                !empty($_FILES["icone"]['name']) &&
+                !empty($_FILES['photo']['name'])
+            )
             {
-                header('location:index');
+                $icone=file_get_contents($_FILES["icone"]["tmp_name"]);
+                $photo=file_get_contents($_FILES["photo"]["tmp_name"]);
+                $data=array(
+                    'nom'=>$_POST['nom'],
+                    'description'=>$_POST['description'],
+                    'photo'=>$photo,
+                    'icone'=>$icone,
+                    'masquer'=>0,
+                );
+                $result=Category::add($data);
+                if($result =='ok')
+                {
+                    header('location:index');
+                }
+                else
+                {
+                    echo $result;
+                }
             }
-            else
-            {
-                echo $result;
-            }
+            
         }
     }
 }

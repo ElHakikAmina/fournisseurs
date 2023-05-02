@@ -1,15 +1,54 @@
 <?php
 class ProductController{
-    public function getAllSellerProduct()
+    public function getAllProductsSESSION()
     {
         if(isset($_SESSION['id_client']))
+        {
+            
+            $data=array(
+                'id_client'=>$_SESSION['id_client'],
+            );
+            $products=Product::getAllProductsSESSION($data);
+            return $products;
+        }
+    }
+    public function getAllProducts()
+    {
+        $produits=Product::getAllProducts();
+        return $produits;
+    }
+    public function NombreDeFoisUnProduitEstAchetee()
+    {
+        if(isset($_GET['id']))
+        {
+            $data=array(
+                'id_produit'=>$_GET['id'],
+            );
+            $product=product::NombreDeFoisUnProduitEstAchetee($data);
+            return $product;
+        }
+    }
+    public function TopVentes(){
+        $products=product::TopVentes();
+        return $products;
+    }
+    public function getAllSellerProduct()
+    {
+        if(isset($_SESSION['id_client']) 
+        and $_SESSION['id_client'] == $_GET['id']
+        )
         { 
             $data = array(
                 'id' =>$_SESSION['id_client']
             );
+        }elseif(isset($_GET['id']))
+        {
+            $data = array(
+                'id' =>$_GET['id']
+            );
+        }
         $product = Product::getAllSellerProduct($data);
         return $product;
-        }
     }
     public function NombreDePagesPagination()
     {
@@ -37,6 +76,13 @@ class ProductController{
     }
 
     public function totalProduct(){return Product::totalProduct(); }
+    public function totalProductOneClient(){
+        $data=array(
+            'id_client'=>$_SESSION['id_client'],
+        );
+        
+        return Product::totalProductOneClient($data);
+     }
     public function totalProductMasquer(){return Product::totalProductMasquer(); }
     public function masquerProduct()
     {
@@ -63,7 +109,7 @@ class ProductController{
             $result = Product::delete($data);
             if($result === 'ok')
             {
-               header("location:http://localhost/fournisseurs/afficheproduitadmin");
+               header("location:http://localhost/fournisseurs/dashboardClient");
                 
             } 
         }  
@@ -85,10 +131,7 @@ class ProductController{
             
             $data = array(
                 'id' =>$_GET['id'],
-                'reference' => $_POST['reference'],
                 'libelle' => $_POST['libelle'],
-                'code_barre' => $_POST['code_barre'],
-                'prix_achat' => $_POST['prix_achat'],
                 'prix_final' => $_POST['prix_final'],
                 'prix_offre' => $_POST['prix_offre'],
                 'description' => $_POST['description'],
@@ -97,10 +140,10 @@ class ProductController{
                
             );
             $result = Product::update($data);
-            header("location:http://localhost/fournisseurs/product/".$_GET['id']);
             if($result === 'ok')
             {
-                
+                header("location:http://localhost/fournisseurs/product/".$_GET['id']);
+
             }else
             {
                 echo $result;
@@ -144,9 +187,9 @@ class ProductController{
         }
         
     }
-    public function getAllProducts()
+    public function nouvelleArrivee()
     {
-        $products=product::getAll();
+        $products=product::nouvelleArrivee();
         return $products;
     }
     public function add()
@@ -157,10 +200,10 @@ class ProductController{
             {
                 $photo=file_get_contents($_FILES['photo']['tmp_name']);
                 $data=array(
-                    'reference'=>$_POST['reference'],
+                    // 'reference'=>$_POST['reference'],
                     'libelle'=>$_POST['libelle'],
-                    'code_barre'=>$_POST['code_barre'],
-                    'prix_achat'=>$_POST['prix_achat'],
+                    // 'code_barre'=>$_POST['code_barre'],
+                    // 'prix_achat'=>$_POST['prix_achat'],
                     'prix_final'=>$_POST['prix_final'],
                     'prix_offre'=>$_POST['prix_offre'],
                     'description'=>$_POST['description'],
@@ -168,6 +211,8 @@ class ProductController{
                     'photo'=>$photo,
                     'masquer'=>0,
                     'id_client'=>$_SESSION['id_client'],
+                    'last_quantity'=>$_POST['last_quantity'],
+                    'quantity'=>$_POST['quantity'],
                 );
                 $result = Product::add($data);
                 if($result=='ok')

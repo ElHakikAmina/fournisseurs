@@ -1,7 +1,7 @@
 <?php
 $loginUser= new ClientController();
 $loginUser->auth();
-$profil=$loginUser->getOneProfile();
+//$profil=$loginUser->getOneProfile();
 $cooperatives=$loginUser->getuniteproduction();
 ?>
 <!doctype html>

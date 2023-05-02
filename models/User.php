@@ -1,9 +1,19 @@
 <?php
 class User{
+    static public function show4cooperative()
+    {
+        $stmt=DB::connect()->prepare("SELECT * from client where id_role='4' limit 4");
+        $stmt->execute();
+        return $stmt->fetchAll();
+        $stmt->close();
+        $stmt=null;
+    }
     static public function getgrossisste()
     {
-        $stmt = DB::connect()->prepare("SELECT *
-         FROM client where id_role='5'");
+        $stmt = DB::connect()->prepare("SELECT client.*, role.id AS role_id, role.role AS role_name
+        FROM client
+        INNER JOIN role
+        ON client.id_role = role.id where id_role='5'");
         $stmt->execute();
         return $stmt->fetchAll();
         $stmt->close();
@@ -11,8 +21,11 @@ class User{
     }
     static public function getcooperative()
     {
-        $stmt = DB::connect()->prepare("SELECT *
-         FROM client where id_role='4'");
+        $stmt = DB::connect()->prepare("SELECT client.*, role.id AS role_id, role.role AS role_name
+        FROM client
+        INNER JOIN role
+        ON client.id_role = role.id
+        WHERE client.id_role = '4'");
         $stmt->execute();
         return $stmt->fetchAll();
         $stmt->close();
@@ -20,8 +33,10 @@ class User{
     }
     static public function getartisan()
     {
-        $stmt = DB::connect()->prepare("SELECT *
-         FROM client where id_role='3'");
+        $stmt = DB::connect()->prepare("SELECT client.*, role.id AS role_id, role.role AS role_name
+        FROM client
+        INNER JOIN role
+        ON client.id_role = role.id where id_role='3'");
         $stmt->execute();
         return $stmt->fetchAll();
         $stmt->close();
@@ -29,8 +44,10 @@ class User{
     }
     static public function getuniteproduction()
     {
-        $stmt = DB::connect()->prepare("SELECT *
-         FROM client where id_role='2'");
+        $stmt = DB::connect()->prepare("SELECT client.*, role.id AS role_id, role.role AS role_name
+        FROM client
+        INNER JOIN role
+        ON client.id_role = role.id where id_role='2'");
         $stmt->execute();
         return $stmt->fetchAll();
         $stmt->close();

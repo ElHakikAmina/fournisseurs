@@ -1,6 +1,9 @@
 <?php
 $loginUser= new ClientController();
 $loginUser->auth();
+$product = new ProductController();
+$product->updateProduct();
+$productWithId=$product->getOneProduct();
 ?>
 <!doctype html>
 <html lang="en">

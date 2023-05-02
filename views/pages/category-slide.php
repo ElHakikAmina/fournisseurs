@@ -1,4 +1,4 @@
-<div class="category-slide d-flex mt-4">
+<div class="category-slide d-flex mt-4 mx-4">
 <!---->
     <div class="categories col-12 col-md-4">
         <ul class="list-group list-group-flush">

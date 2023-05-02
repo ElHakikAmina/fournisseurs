@@ -1,5 +1,10 @@
 
 <div class="w-50 mx-auto mt-5" style="margin-bottom:120px !important;">
+<?php if(isset($_GET['id']) and $_GET['id']==0){  ?>
+  <div class="text-danger text-center">
+    <?php echo $_SESSION['erreur_login']; ?>
+  </div>
+<?php }?>
 <h2 class="">Login</h2>
 <form method="POST">
   <div class="form-group" >
@@ -16,7 +21,7 @@
   </div> 
   <button type="submit" name="btn-login" class="btn btn-primary ">Submit</button>
   <div >
-    <p class="">Not a member? <a href="register" class="">Create Account</a><p>
+    <p class="">Not a member? <a href="http://localhost/fournisseurs/register" class="">Create Account</a><p>
   </div>
 </form>
 </div>
